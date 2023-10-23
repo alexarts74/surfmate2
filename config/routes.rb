@@ -3,4 +3,5 @@ Rails.application.routes.draw do
     sessions: 'api/sessions',
     registrations: 'api/registrations'
   }
+  delete '/api/users', to: 'api/registrations#destroy'
 end
