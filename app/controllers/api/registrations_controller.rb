@@ -11,20 +11,13 @@ class Api::RegistrationsController < Devise::RegistrationsController
     end
   end
 
-
   def destroy
     resource.destroy
-    signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
-    render json: { message: 'Suppression de compte !' }
+    Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
+    set_flash_message! :notice, :destroyed
+    yield resource if block_given?
+    respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name), status: Devise.responder.redirect_status }
   end
-
-  # def destroy
-  #   resource.destroy
-  #   Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name)
-  #   set_flash_message! :notice, :destroyed
-  #   yield resource if block_given?
-  #   respond_with_navigational(resource){ redirect_to after_sign_out_path_for(resource_name), status: Devise.responder.redirect_status }
-  # end
 
   private
 

@@ -1,6 +1,5 @@
 class SessionsController < ApplicationController
   # app/controllers/sessions_controller.rb
-class SessionsController < ApplicationController
   # Afficher toutes les sessions de surf
   def index
     @sessions = Session.all
@@ -45,6 +44,4 @@ class SessionsController < ApplicationController
   def session_params
     params.require(:session).permit(:location, :date, :description, :user_id)
   end
-end
-
 end

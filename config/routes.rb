@@ -3,5 +3,8 @@ Rails.application.routes.draw do
     sessions: 'api/sessions',
     registrations: 'api/registrations'
   }
-  delete '/api/users', to: 'api/registrations#destroy'
+  namespace :api do
+    resources :sessions, only: %i[index show update destroy]
+    resources :messages, only: %i[index show update destroy]
+  end
 end
