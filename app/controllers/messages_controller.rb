@@ -1,6 +1,4 @@
 class MessagesController < ApplicationController
-  # app/controllers/messages_controller.rb
-class MessagesController < ApplicationController
   # Afficher tous les messages
   def index
     @messages = Message.all
@@ -27,7 +25,7 @@ class MessagesController < ApplicationController
   def update
     @message = Message.find(params[:id])
     if @message.update(message_params)
-      render json: @message
+      render json: @message, status: :updated
     else
       render json: @message.errors, status: :unprocessable_entity
     end
@@ -45,6 +43,4 @@ class MessagesController < ApplicationController
   def message_params
     params.require(:message).permit(:content, :sender_id, :recipient_id)
   end
-end
-
 end

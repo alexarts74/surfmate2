@@ -45,3 +45,4 @@ class SessionsController < ApplicationController
     params.require(:session).permit(:location, :date, :description, :user_id)
   end
 end
+

@@ -32,6 +32,14 @@ gem "devise"
 gem 'simple_form'
 
 gem 'doorkeeper'
+
+gem 'devise_token_auth'
+
+gem 'responders'
+
+gem 'devise-jwt'
+
+
 # Use Redis adapter to run Action Cable in production
 # gem "redis", "~> 4.0"
 
