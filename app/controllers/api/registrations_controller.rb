@@ -6,35 +6,21 @@ class Api::RegistrationsController < Devise::RegistrationsController
     skip_before_action :authenticate_scope!, only: [:destroy]
     before_action :authenticate_user_from_token!, only: [:destroy]
 
-    def log_request_info
-        puts "Requête reçue dans RegistrationsController"
-        puts "Méthode : #{request.method}"
-        puts "Chemin : #{request.path}"
-        puts "Headers : #{request.headers.to_h.select { |k, v| k.start_with?('HTTP_') }}"
-      end
-
     def create
         puts "In create session"
         build_resource(sign_up_params)
         if resource.save
-            render json: { message: 'Inscription réussie !', user: resource }
+            sign_up(resource_name, resource) if resource.active_for_authentication?
+            render json: {
+              message: 'Inscription réussie',
+              user: resource,
+              authentication_token: resource.authentication_token
+            }, status: :created
         else
             render json: { errors: resource.errors.full_messages }, status: :unprocessable_entity
         end
     end
 
-    # def destroy
-    #     puts "In destory registration"
-    #     # @user = current_user
-    #     if current_user
-    #       puts "Utilisateur connecté : #{current_user.email}"
-    #       current_user.destroy
-    #     #   sign_out(current_user)
-    #       render json: { message: 'Compte supprimé avec succès.' }, status: :ok
-    #     else
-    #       render json: { error: 'Aucun utilisateur connecté.' }, status: :unprocessable_entity
-    #     end
-    # end
 
     def destroy
         puts "In destroy registration"
@@ -68,6 +54,6 @@ class Api::RegistrationsController < Devise::RegistrationsController
     end
 
     def sign_up_params
-        params.require(:user).permit(:name, :age, :level, :bio, :email, :password, :image)
+        params.require(:user).permit(:email, :password, :password_confirmation, :name, :bio, :age, :image, :level)
     end
 end

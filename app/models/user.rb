@@ -15,21 +15,24 @@ class User < ApplicationRecord
     validates :level, presence: true
     validates :bio, presence: true
     validates :image, presence: true
+    validates :authentication_token, presence: true, uniqueness: true
 
     before_create :generate_authentication_token
-
-
-    def destroy_messages
-        Message.where('sender_id = ? OR recipient_id = ?', id, id).destroy_all
-    end
+    before_validation :ensure_authentication_token, on: :create
 
     def ensure_authentication_token
         self.authentication_token ||= generate_authentication_token
     end
 
+    def destroy_messages
+        Message.where('sender_id = ? OR recipient_id = ?', id, id).destroy_all
+    end
+
+
     private
 
     def generate_authentication_token
+        puts "In generate_authentication_token"
         loop do
             token = SecureRandom.hex(20)
             break token unless User.where(authentication_token: token).exists?
