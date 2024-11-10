@@ -1,4 +1,4 @@
-class Session < ApplicationRecord
+class SurfingSession < ApplicationRecord
   belongs_to :user
 
   validates :location, presence: true

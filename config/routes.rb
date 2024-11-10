@@ -8,13 +8,10 @@ Rails.application.routes.draw do
       devise_scope :user do
         # Connexion
         post 'users/log_in', to: 'sessions#create'
-
         # Déconnexion
         delete 'users/log_out', to: 'sessions#destroy'
-
         # Inscription
         post 'users/sign_up', to: 'registrations#create'
-
         # Suppression de compte
         delete 'users/sign_out', to: 'registrations#destroy'
       end
@@ -22,5 +19,6 @@ Rails.application.routes.draw do
       # Autres ressources API
       resources :messages, only: [:index, :show, :update, :destroy]
       resources :users, only: [:index, :show, :update, :destroy]
+      resources :surfing_sessions, only: [:index, :show, :update, :destroy]
     end
-  end
+end
