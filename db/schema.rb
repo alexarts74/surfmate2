@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_11_10_110206) do
+ActiveRecord::Schema[7.0].define(version: 2024_11_10_132438) do
   create_table "messages", force: :cascade do |t|
     t.text "content"
     t.integer "sender_id"
@@ -28,6 +28,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_11_10_110206) do
     t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "title"
+    t.integer "max_participants"
+    t.string "level_required"
+    t.string "status", default: "open"
+    t.float "wave_height"
+    t.string "meeting_point"
     t.index ["user_id"], name: "index_surfing_sessions_on_user_id"
   end
 

@@ -1,17 +1,26 @@
+require 'faker'
+
 puts "Cleaning database..."
 SurfingSession.destroy_all
 User.destroy_all
 
-puts "Creating test user..."
-user = User.create!(
-  email: "surfer@example.com",
-  password: "password123",
-  name: "John Doe",
-  bio: "Passionné de surf depuis 10 ans, je parcours les spots de la côte basque à la recherche des meilleures vagues.",
-  age: 28,
-  image: "https://avatars.githubusercontent.com/u/1234567",
-  level: ["Débutant", "Intermédiaire", "Avancé", "Expert"].sample
-)
+puts "Creating test users..."
+users = []
+
+2
+.times do |i|
+  users << User.create!(
+    email: "surfer#{i+1}@example.com",
+    password: "password123",
+    name: Faker::Name.name,
+    bio: Faker::Lorem.paragraph(sentence_count: 3),
+    age: rand(18..50),
+    image: "https://avatars.githubusercontent.com/u/#{rand(1000..9999)}",
+    level: ["Débutant", "Intermédiaire", "Avancé", "Expert"].sample
+  )
+end
+
+puts "Creating surfing sessions..."
 
 spots = [
   "Hossegor - La Gravière",
@@ -24,6 +33,15 @@ spots = [
   "Biarritz - Côte des Basques",
   "Guéthary - Parlementia",
   "Bidart - Plage du Centre"
+]
+
+titles = [
+  "Session matinale",
+  "After-work surf",
+  "Session du week-end",
+  "Sunset session",
+  "Session découverte",
+  "Session entre potes"
 ]
 
 descriptions = [
@@ -39,14 +57,28 @@ descriptions = [
   "Belle session en longboard sur des vagues douces."
 ]
 
-puts "Creating 50 surf sessions..."
+meeting_points = [
+  "Parking principal",
+  "Devant le poste de secours",
+  "Café du surf",
+  "Entrée de la plage",
+  "École de surf locale"
+]
+
 10.times do
   SurfingSession.create!(
+    title: titles.sample,
     location: spots.sample,
     date: Faker::Time.between(from: 6.months.ago, to: Date.today),
     description: descriptions.sample,
-    user_id: user.id
+    user_id: users.sample.id,
+    max_participants: rand(2..8),
+    level_required: ["Débutant", "Intermédiaire", "Avancé", "Expert"].sample,
+    status: ["open", "full", "completed"].sample,
+    wave_height: rand(0.5..2.5).round(1),
+    meeting_point: meeting_points.sample
   )
 end
 
-puts "✅ Created #{SurfingSession.count} surf sessions!"
+puts "✅ Created #{User.count} users"
+puts "✅ Created #{SurfingSession.count} surfing sessions"
