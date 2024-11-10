@@ -1,3 +1,4 @@
+
 class Api::RegistrationsController < Devise::RegistrationsController
     include ActionController::MimeResponds
     respond_to :json

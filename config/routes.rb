@@ -21,5 +21,6 @@ Rails.application.routes.draw do
 
       # Autres ressources API
       resources :messages, only: [:index, :show, :update, :destroy]
+      resources :users, only: [:index, :show, :update, :destroy]
     end
   end
